@@ -1,0 +1,17 @@
+import dstack as ds
+import plotly.express as px
+import seaborn as sns
+app = ds.app()  
+def get_data():
+    df = sns.load_dataset('tips')
+    return df
+
+visual = app.select(items=get_data().columns.tolist())
+def output_handler(self, visual):
+    self.data = px.box(get_data(), x="time", y=visual.value())
+    
+
+app.output(handler=output_handler, depends=[visual])
+# deploy the application with the name "stocks" and print its URL 
+url = app.deploy("visual")
+print(url)
